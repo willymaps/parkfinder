@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'/>
+<title>Park Finder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans|Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+</head>
+<style>
+
+	body {
+		font-family: Open Sans, arial, sans-serif;
+		font-size:14px;
+		text-align: center;
+		color:#555;
+	}
+
+	h2 {
+		margin: 2px 0;
+		color:#333;
+	}
+
+	.leaflet-container {
+    	background: #fff;
+	}
+
+	.leaflet-container a {
+    	color: #d3d3d3;
+    	text-decoration:none;
+	}
+
+	.subhead {
+		line-height: 20px;
+	}
+
+	.subhead span {
+	    font-size: 9px;
+	    padding: 5px 6px;
+	    background: red;
+	    color: #fff;
+	    border-radius: 10px;
+	}
+
+	.wrapper {
+		display:block;
+		margin:auto;
+	}
+
+	.leftwrap {
+		display:inline-block;
+		max-width:250px;
+		width:100%;
+		vertical-align: top;
+	}
+
+	.rightwrap {
+		display: inline-block;
+		max-width:600px;
+		width:100%;
+	}
+
+	#map {
+		width:100%;
+		height: 730px;
+	}
+
+	.marktext {
+	    font-size: 12px;
+	    font-style: italic;
+	    font-weight:bold;
+	    width: 37px;
+	    padding: 8px;
+	    background: red;
+	    color: #FFF;
+	    border-radius: 30px;
+	    border: 1px solid #fff;
+	}
+
+@media (max-width:500px) {
+	#map {
+		height:380px;
+	}
+	.marktext {
+	    font-size: 8px;
+	    padding: 5px;
+	    font-style: italic;
+	    font-weight: bold;
+	    width: 26px;
+	}
+}
+
+</style>
+
+<body>
+<div class="wrapper">
+	<div class="leftwrap">
+		<h2>Trinity Bellwoods <i class="em em-telescope"></i></h2>
+		<div class="subhead">
+		<p>A simple map to help let others know where you're located in the park. Simply grab the <span><b><i>HERE</i></b></span> marker and drop it on your location.</p>
+		</div>
+	</div>
+	<div class="rightwrap">
+		<div id="map"></div>
+	</div>
+</div>
+
+<script src="script/bouncemarker.js"></script>
+<script>
+
+var map = L.map('map', {
+  minZoom: 1,
+  maxZoom: 4,
+  center: [0, 0],
+  zoom: 2,
+  crs: L.CRS.Simple,
+  zoomControl:false
+});
+
+window.addEventListener('load', function(event){
+    var width = document.documentElement.clientWidth;
+    if (width > 500) {
+        map.setZoom(2);
+        marker.bounce({duration: 4000, height: 400});
+    }  else {
+        map.setZoom(1);
+        marker.bounce({duration: 0, height: 0});
+    }
+});
+
+map.scrollWheelZoom.disable();
+
+var w = 1200,
+    h = 1456,
+    url = 'trinity.png';
+
+var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+var bounds = new L.LatLngBounds(southWest, northEast);
+
+L.imageOverlay(url, bounds).addTo(map);
+
+map.setMaxBounds(bounds);
+
+var marker = new L.marker([-67,95],{
+	draggable: true,
+	icon: new L.DivIcon({
+        className: 'my-div-icon',
+        html: '<div class="marktext">' + 'HERE' + '</div>'
+    })
+}).addTo(map);
+
+marker.on("drag", function(e) {
+    var marker = e.target;
+    var position = marker.getLatLng();
+    map.panTo(new L.LatLng(position.lat, position.lng));
+});
+
+map.on("click", function(e) {
+	map.setZoom(2);
+})
+
+</script>
+
+</body>
+</html>

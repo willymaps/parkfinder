@@ -68,10 +68,10 @@
 	}
 
 	.marktext {
-	    font-size: 12px;
+	    font-size: 10px;
 	    font-style: italic;
-	    font-weight:bold;
-	    width: 37px;
+	    font-weight: bold;
+	    width: 28px;
 	    padding: 8px;
 	    background: red;
 	    color: #FFF;
@@ -124,9 +124,11 @@ window.addEventListener('load', function(event){
     if (width > 500) {
         map.setZoom(2);
         marker.bounce({duration: 4000, height: 400});
+        map.dragging.disable();
     }  else {
         map.setZoom(1);
         marker.bounce({duration: 0, height: 0});
+        map.dragging.enable();
     }
 });
 
@@ -147,7 +149,7 @@ map.setMaxBounds(bounds);
 var marker = new L.marker([-67,95],{
 	draggable: true,
 	icon: new L.DivIcon({
-        className: 'my-div-icon',
+        className: 'div-icon',
         html: '<div class="marktext">' + 'HERE' + '</div>'
     })
 }).addTo(map);
@@ -160,7 +162,7 @@ marker.on("drag", function(e) {
 
 map.on("click", function(e) {
 	map.setZoom(2);
-})
+});
 
 </script>
 

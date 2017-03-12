@@ -80,9 +80,11 @@
 	}
 
 @media (max-width:500px) {
+
 	#map {
 		height:380px;
 	}
+	
 	.marktext {
 	    font-size: 8px;
 	    padding: 5px;
@@ -99,7 +101,7 @@
 	<div class="leftwrap">
 		<h2>Trinity Bellwoods <i class="em em-telescope"></i></h2>
 		<div class="subhead">
-		<p>A simple map to help let others know where you're located in the park. Simply grab the <span><b><i>HERE</i></b></span> marker and drop it on your location.</p>
+		<p>A simple map to help let others know where you're located in the park. Grab the <span><b><i>HERE</i></b></span> marker and drop it on your location.</p>
 		</div>
 	</div>
 	<div class="rightwrap">
@@ -119,18 +121,24 @@ var map = L.map('map', {
   zoomControl:false
 });
 
-window.addEventListener('load', function(event){
-    var width = document.documentElement.clientWidth;
+var letsbounce = function(e) {
+	var width = document.documentElement.clientWidth;
     if (width > 500) {
         map.setZoom(2);
         marker.bounce({duration: 4000, height: 400});
-        map.dragging.disable();
-    }  else {
+    } else {
         map.setZoom(1);
-        marker.bounce({duration: 0, height: 0});
-        map.dragging.enable();
+        map.on('zoom', bouncenzoom);
     }
-});
+};
+
+function bouncenzoom(e) {
+	marker.bounce({duration: 3000, height: 200});
+};
+
+window.onload = function(e) {
+	letsbounce();
+};
 
 map.scrollWheelZoom.disable();
 
@@ -154,14 +162,24 @@ var marker = new L.marker([-67,95],{
     })
 }).addTo(map);
 
-marker.on("drag", function(e) {
+marker.on('drag', function(e) {
     var marker = e.target;
     var position = marker.getLatLng();
     map.panTo(new L.LatLng(position.lat, position.lng));
 });
 
-map.on("click", function(e) {
+map.on('click', function(e) {
 	map.setZoom(2);
+});
+
+map.on('zoomend', function(e) {
+	if (map.getZoom() === 1) {
+		map.dragging.disable();
+		map.off('zoom', bouncenzoom);
+	} else {
+		map.dragging.enable();
+		map.off('zoom', bouncenzoom);
+	}
 });
 
 </script>

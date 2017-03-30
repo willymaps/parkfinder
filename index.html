@@ -105,7 +105,7 @@
 	<div class="leftwrap">
 		<h2>Trinity Bellwoods <i class="em em-telescope"></i></h2>
 		<div class="subhead">
-		<p>A simple map to help let others know where you're located in the park. Grab the <span><b><i>HERE</i></b></span> marker and drop it on your location.</p>
+		<p>Grab the <span><b><i>HERE</i></b></span> marker and drop it on your location. Then screencap!</p>
 		</div>
 	</div>
 	<div class="rightwrap">
@@ -121,8 +121,8 @@ var map = L.map('map', {
   maxZoom: 4,
   center: [0, 0],
   zoom: 2,
-  crs: L.CRS.Simple,
-  zoomControl:false
+  crs: L.CRS.Simple
+//   zoomControl:false
 });
 
 var letsbounce = function(e) {
@@ -172,9 +172,9 @@ marker.on('drag', function(e) {
     map.panTo(new L.LatLng(position.lat, position.lng));
 });
 
-map.on('click', function(e) {
-	map.setZoom(2);
-});
+// map.on('click', function(e) {
+// 	map.setZoom(2);
+// });
 
 map.on('zoomend', function(e) {
 	if (map.getZoom() === 1) {

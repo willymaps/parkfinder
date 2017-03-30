@@ -132,6 +132,7 @@ var letsbounce = function(e) {
         marker.bounce({duration: 4000, height: 400});
     } else {
         map.setZoom(1);
+	map.zoomControl.remove();
         map.on('zoom', bouncenzoom);
     }
 };

@@ -31,7 +31,7 @@
     	color: #d3d3d3;
     	text-decoration:none;
 	}
-	
+
 	.leaflet-container .leaflet-control-attribution {
 	    background: rgba(255, 255, 255, 0);
 	}
@@ -83,12 +83,23 @@
 	    border: 1px solid #fff;
 	}
 
+	.div-label {
+		font-family: courier;
+		font-size:12px;
+		color:#228B22;
+		z-index:9 !important;
+	}
+
+	.div-icon {
+/*		z-index:10 !important;*/
+	}
+
 @media (max-width:500px) {
 
 	#map {
 		height:380px;
 	}
-	
+
 	.marktext {
 	    font-size: 8px;
 	    padding: 5px;
@@ -113,6 +124,7 @@
 	</div>
 </div>
 
+<script src="script/leaflet-hash.js"></script>
 <script src="script/bouncemarker.js"></script>
 <script>
 
@@ -122,7 +134,7 @@ var map = L.map('map', {
   center: [0, 0],
   zoom: 2,
   crs: L.CRS.Simple
-//   zoomControl:false
+  // zoomControl:false
 });
 
 var letsbounce = function(e) {
@@ -132,7 +144,7 @@ var letsbounce = function(e) {
         marker.bounce({duration: 4000, height: 400});
     } else {
         map.setZoom(1);
-	map.zoomControl.remove();
+        map.zoomControl.remove();
         map.on('zoom', bouncenzoom);
     }
 };
@@ -159,7 +171,56 @@ L.imageOverlay(url, bounds).addTo(map);
 
 map.setMaxBounds(bounds);
 
-var marker = new L.marker([-67,95],{
+var labelOne = new L.marker([-64,99],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-dog"></i>'
+    })
+}).addTo(map);
+
+var labelTwo = new L.marker([-105,122],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-baseball"></i>'
+    })
+}).addTo(map);
+
+var labelThree = new L.marker([-177,115],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-coffee"></i>'
+    })
+}).addTo(map);
+
+var labelFour = new L.marker([-4,40],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-coffee"></i>'
+    })
+}).addTo(map);
+
+var labelFive = new L.marker([-115,92],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-beers"></i>'
+    })
+}).addTo(map);
+
+var labelSix = new L.marker([-38,69],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-movie_camera"></i>'
+    })
+}).addTo(map);
+
+var labelSeven = new L.marker([-18,30],{
+	icon: new L.DivIcon({
+        className: 'div-label',
+        html: '<i class="em em-corn"></i>'
+    })
+}).addTo(map);
+
+var marker = new L.marker([-50,90],{
 	draggable: true,
 	icon: new L.DivIcon({
         className: 'div-icon',
@@ -172,10 +233,6 @@ marker.on('drag', function(e) {
     var position = marker.getLatLng();
     map.panTo(new L.LatLng(position.lat, position.lng));
 });
-
-// map.on('click', function(e) {
-// 	map.setZoom(2);
-// });
 
 map.on('zoomend', function(e) {
 	if (map.getZoom() === 1) {
